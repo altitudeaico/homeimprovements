@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Living room · cost</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#2c352c; --olive-2:#384338; --olive-line:#46523f;
+    --oak:#caa46a; --brass:#c2a25a; --cream:#f3efe5; --paper:#fbf8f1;
+    --ink:#1c211c; --muted:#7d8474; --soft:#aab09c;
+    --ok:#7fae5e; --warn:#d98b3a; --over:#cf6a52;
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--olive);color:var(--cream);
+    font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--oak)}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 80px}
+  .num{font-family:"Space Mono",monospace;font-feature-settings:"tnum"}
+  h1,h2,h3{font-family:Fraunces,serif;font-weight:500;margin:0}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);font-weight:600}
+  button{font-family:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--olive-line);
+    background:var(--olive-2);color:var(--cream);padding:8px 14px;font-size:14px}
+  button:hover{border-color:var(--oak)}
+  button.primary{background:var(--oak);color:#241c10;border-color:var(--oak);font-weight:600}
+  button.ghost{background:transparent}
+  button.danger{color:var(--over);border-color:transparent;background:transparent;padding:4px 8px}
+  input,select,textarea{font-family:inherit;font-size:14px;background:var(--paper);color:var(--ink);
+    border:1px solid var(--olive-line);border-radius:8px;padding:8px 10px;width:100%}
+  label{display:block;font-size:12px;color:var(--soft);margin:0 0 4px}
+  .card{background:var(--olive-2);border:1px solid var(--olive-line);border-radius:var(--radius);padding:18px}
+  .row{display:flex;gap:14px;flex-wrap:wrap}
+  .between{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .hidden{display:none!important}
+  .grid-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+
+  header.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:22px;
+    border-bottom:1px solid var(--olive-line);padding-bottom:16px}
+  header.top h1{font-size:26px}
+  .who{font-size:13px;color:var(--soft);text-align:right}
+
+  .rollup{margin-bottom:22px}
+  .rollup .big{font-size:40px;font-weight:700;color:var(--cream)}
+  .rollup .range{color:var(--soft);font-size:14px;margin-top:2px}
+  .stat{flex:1;min-width:150px}
+  .stat .k{font-size:12px;color:var(--soft);text-transform:uppercase;letter-spacing:.1em}
+  .stat .v{font-size:24px;font-weight:700;margin-top:2px}
+  .v.spent{color:var(--oak)} .v.left{color:var(--ok)} .v.left.neg{color:var(--over)}
+
+  .wall{margin-bottom:12px}
+  .wall .head{display:flex;align-items:center;gap:14px;cursor:pointer}
+  .badge{font-family:Fraunces,serif;font-size:20px;width:42px;height:42px;flex:none;
+    display:grid;place-items:center;border-radius:10px;background:var(--olive);border:1px solid var(--brass);color:var(--brass)}
+  .wall .name{font-family:Fraunces,serif;font-size:18px}
+  .wall .sub{font-size:12px;color:var(--soft)}
+  .wall .figs{margin-left:auto;text-align:right;font-size:13px;color:var(--soft)}
+  .wall .figs b{display:block;font-family:"Space Mono",monospace;font-size:18px;color:var(--cream);font-weight:700}
+  .bar{height:6px;border-radius:3px;background:var(--olive);margin-top:10px;overflow:hidden}
+  .bar > span{display:block;height:100%;background:var(--ok)}
+  .bar > span.warn{background:var(--warn)} .bar > span.over{background:var(--over)}
+
+  .body{margin-top:14px;border-top:1px solid var(--olive-line);padding-top:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;color:var(--soft);font-weight:500;font-size:11px;text-transform:uppercase;
+    letter-spacing:.08em;padding:6px 8px;border-bottom:1px solid var(--olive-line)}
+  td{padding:7px 8px;border-bottom:1px solid var(--olive-line);vertical-align:middle}
+  td.r,th.r{text-align:right}
+  .pill{font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid var(--olive-line);color:var(--soft)}
+  .pill.bought{color:var(--ok);border-color:var(--ok)}
+  .pill.ordered{color:var(--warn);border-color:var(--warn)}
+  .empty{color:var(--muted);font-size:13px;padding:8px 0}
+  .section-label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--brass);
+    font-weight:600;margin:16px 0 8px}
+  .thumb{width:34px;height:34px;border-radius:6px;object-fit:cover;border:1px solid var(--olive-line)}
+
+  .signin{max-width:380px;margin:60px auto;text-align:center}
+  .signin .card{text-align:left}
+  .note{font-size:12px;color:var(--muted);margin-top:8px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);
+    color:var(--cream);padding:10px 16px;border-radius:8px;border:1px solid var(--olive-line);
+    font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1}
+  .est .card{border-style:dashed;opacity:.85}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SIGN IN -->
+  <div id="signin" class="signin hidden">
+    <p class="eyebrow">Living room renovation</p>
+    <h1 style="font-size:30px;margin:6px 0 18px">Cost</h1>
+    <div class="card">
+      <label for="password">Household password</label>
+      <input id="password" type="password" placeholder="Enter the shared password" autocomplete="current-password">
+      <button class="primary" id="signin-btn" style="margin-top:12px;width:100%">Sign in</button>
+      <p class="note">One password for the whole household. Ask whoever set this up if you don't have it.</p>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hidden">
+    <header class="top">
+      <div>
+        <p class="eyebrow">Living room renovation</p>
+        <h1>Cost</h1>
+      </div>
+      <div class="who">
+        <div id="who-email"></div>
+        <button class="ghost" id="signout" style="margin-top:6px;padding:4px 10px;font-size:12px">Sign out</button>
+      </div>
+    </header>
+
+    <div class="card rollup">
+      <div class="between">
+        <div>
+          <p class="eyebrow">Project to date</p>
+          <div class="big num" id="r-target">—</div>
+          <div class="range num" id="r-range">planned target spend</div>
+        </div>
+        <div class="row" style="text-align:right;flex:1;justify-content:flex-end">
+          <div class="stat" style="flex:none">
+            <div class="k">Spent</div>
+            <div class="v spent num" id="r-spent">—</div>
+          </div>
+          <div class="stat" style="flex:none">
+            <div class="k">Remaining vs target</div>
+            <div class="v left num" id="r-left">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Walls</div>
+    <div id="walls"></div>
+
+    <div class="est">
+      <div class="section-label">Smart estimate</div>
+      <div class="card">
+        <div class="between">
+          <div>
+            <h3 style="font-size:16px">Describe a wall, get a costed plan</h3>
+            <p class="note" style="margin-top:6px;max-width:560px">
+              Type what a wall needs in plain English and a costed set of budget lines comes back —
+              priced from your catalogue, explained by a small local model. This turns on once the
+              catalogue and local model are wired. For now, add lines by hand on each wall above.</p>
+          </div>
+          <button disabled title="Coming next">Coming next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="toast" class="toast"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL = 'https://ypyxshljancxlvtjlpyo.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_EAkaTmxUobuZyd80Vqintw_Yne7JmDZ';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $ = (id) => document.getElementById(id);
+const gbp = (n) => new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0}).format(Number(n)||0);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let toastTimer;
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600); }
+
+let state = { room:null, walls:[], wallSummary:{}, linesByWall:{}, receiptsByWall:{}, open:new Set() };
+
+/* ---------- auth ---------- */
+async function refreshAuth(){
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session){
+    $('signin').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    $('who-email').textContent = 'Household account';
+    await loadAll();
+    subscribe();
+  } else {
+    $('app').classList.add('hidden');
+    $('signin').classList.remove('hidden');
+  }
+}
+const LOGIN_EMAIL = 'home@altitudeai.co';
+async function doSignIn(){
+  const password = $('password').value;
+  if(!password) return toast('Enter the password');
+  $('signin-btn').disabled = true;
+  const { error } = await sb.auth.signInWithPassword({ email: LOGIN_EMAIL, password });
+  $('signin-btn').disabled = false;
+  if(error) return toast("That password didn't work");
+  await refreshAuth();
+}
+$('signin-btn').onclick = doSignIn;
+$('password').addEventListener('keydown', e => { if(e.key === 'Enter') doSignIn(); });
+$('signout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+/* ---------- data ---------- */
+async function loadAll(){
+  const { data:room } = await sb.from('rooms').select('*').eq('slug','living-room').maybeSingle();
+  state.room = room;
+  if(!room){ $('walls').innerHTML = '<p class="empty">No living room found. Run the migration first.</p>'; return; }
+
+  const { data:walls } = await sb.from('walls').select('*').eq('room_id',room.id).order('sort_order');
+  state.walls = walls || [];
+
+  const { data:ws } = await sb.from('wall_budget_summary').select('*').eq('room_id',room.id);
+  state.wallSummary = {};
+  (ws||[]).forEach(r => state.wallSummary[r.wall_id] = r);
+
+  const { data:rs } = await sb.from('room_budget_summary').select('*').eq('room_id',room.id).maybeSingle();
+  renderRollup(rs);
+
+  const { data:lines } = await sb.from('budget_lines').select('*').eq('room_id',room.id).order('created_at');
+  state.linesByWall = {};
+  (lines||[]).forEach(l => (state.linesByWall[l.wall_id] ||= []).push(l));
+
+  const { data:recs } = await sb.from('receipts').select('*').eq('room_id',room.id).order('purchased_at',{ascending:false});
+  state.receiptsByWall = {};
+  for(const r of (recs||[])){
+    (state.receiptsByWall[r.wall_id] ||= []).push(r);
+  }
+  renderWalls();
+}
+
+function renderRollup(rs){
+  const target = rs?.planned_target || 0, low = rs?.planned_low || 0, high = rs?.planned_high || 0;
+  const spent = rs?.actual_spent || 0, left = target - spent;
+  $('r-target').textContent = gbp(target);
+  $('r-range').textContent = (low||high) ? `range ${gbp(low)} – ${gbp(high)}` : 'planned target spend';
+  $('r-spent').textContent = gbp(spent);
+  const lv = $('r-left'); lv.textContent = gbp(left); lv.classList.toggle('neg', left < 0);
+}
+
+function lineTotal(l, field){ return (Number(l[field])||0) * (Number(l.qty)||0); }
+
+function renderWalls(){
+  const host = $('walls'); host.innerHTML = '';
+  for(const w of state.walls){
+    const s = state.wallSummary[w.id] || {};
+    const planned = s.planned_target || 0, spent = s.actual_spent || 0;
+    const pct = planned > 0 ? Math.min(100, (spent/planned)*100) : 0;
+    const barClass = planned>0 && spent>planned ? 'over' : (pct>80 ? 'warn' : '');
+    const open = state.open.has(w.id);
+
+    const el = document.createElement('div');
+    el.className = 'card wall';
+    el.innerHTML = `
+      <div class="head" data-wall="${w.id}">
+        <div class="badge">${esc(w.letter)}</div>
+        <div>
+          <div class="name">${esc(w.name)}</div>
+          <div class="sub">${w.width_m ? esc(w.width_m)+' m wide' : ''}</div>
+        </div>
+        <div class="figs">
+          <span>planned ${gbp(planned)} · spent</span>
+          <b class="${spent>planned&&planned>0?'':''}">${gbp(spent)}</b>
+        </div>
+      </div>
+      <div class="bar"><span class="${barClass}" style="width:${pct}%"></span></div>
+      <div class="body ${open?'':'hidden'}" id="body-${w.id}"></div>`;
+    host.appendChild(el);
+    el.querySelector('.head').onclick = () => {
+      if(state.open.has(w.id)) state.open.delete(w.id); else state.open.add(w.id);
+      renderWalls();
+    };
+    if(open) renderWallBody(w);
+  }
+}
+
+function renderWallBody(w){
+  const body = $('body-'+w.id);
+  const lines = state.linesByWall[w.id] || [];
+  const recs = state.receiptsByWall[w.id] || [];
+
+  const lineRows = lines.length ? lines.map(l => `
+    <tr>
+      <td>${esc(l.description)}</td>
+      <td class="num">${esc(l.qty)}${l.unit?' '+esc(l.unit):''}</td>
+      <td class="r num">${gbp(lineTotal(l,'target'))}</td>
+      <td class="r"><span class="pill ${esc(l.status)}">${esc(l.status)}</span></td>
+      <td class="r"><button class="danger" data-del-line="${l.id}">remove</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" class="empty">No lines yet. Add the first below.</td></tr>';
+
+  const recRows = recs.length ? recs.map(r => `
+    <tr>
+      <td>${r._thumb ? `<img class="thumb" src="${r._thumb}" alt="">` : ''}</td>
+      <td>${esc(r.vendor||'—')}</td>
+      <td class="num">${esc(r.purchased_at||'')}</td>
+      <td class="r num">${gbp(r.amount)}</td>
+      <td class="r"><button class="danger" data-del-rec="${r.id}">remove</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" class="empty">No receipts logged yet.</td></tr>';
+
+  body.innerHTML = `
+    <div class="section-label" style="margin-top:0">Planned lines</div>
+    <table><thead><tr><th>Item</th><th>Qty</th><th class="r">Target</th><th class="r">Status</th><th></th></tr></thead>
+      <tbody>${lineRows}</tbody></table>
+    <details style="margin-top:10px">
+      <summary style="cursor:pointer;color:var(--oak);font-size:13px">+ Add a planned line</summary>
+      <div class="grid-form" style="margin-top:10px">
+        <div style="grid-column:1/-1"><label>Description</label><input data-f="description" placeholder="Oak slat panel"></div>
+        <div><label>Qty</label><input data-f="qty" type="number" step="any" value="1"></div>
+        <div><label>Unit</label><input data-f="unit" placeholder="m / each"></div>
+        <div><label>Low £</label><input data-f="low" type="number" step="any"></div>
+        <div><label>Target £</label><input data-f="target" type="number" step="any"></div>
+        <div><label>High £</label><input data-f="high" type="number" step="any"></div>
+        <div><label>Status</label><select data-f="status"><option value="planned">planned</option><option value="ordered">ordered</option><option value="bought">bought</option></select></div>
+      </div>
+      <button class="primary" data-add-line="${w.id}" style="margin-top:10px">Save line</button>
+      <p class="note">Prices are per unit; the target × qty is what counts toward the budget.</p>
+    </details>
+
+    <div class="section-label">Receipts (actual spend)</div>
+    <table><thead><tr><th></th><th>Vendor</th><th>Date</th><th class="r">Amount</th><th></th></tr></thead>
+      <tbody>${recRows}</tbody></table>
+    <details style="margin-top:10px">
+      <summary style="cursor:pointer;color:var(--oak);font-size:13px">+ Log a receipt</summary>
+      <div class="grid-form" style="margin-top:10px">
+        <div><label>Vendor</label><input data-rf="vendor" placeholder="B&Q"></div>
+        <div><label>Amount £</label><input data-rf="amount" type="number" step="any"></div>
+        <div><label>Date</label><input data-rf="purchased_at" type="date"></div>
+        <div style="grid-column:1/-1"><label>Photo (optional)</label><input data-rf="photo" type="file" accept="image/*"></div>
+      </div>
+      <button class="primary" data-add-rec="${w.id}" style="margin-top:10px">Save receipt</button>
+    </details>`;
+
+  body.querySelector('[data-add-line]').onclick = () => addLine(w.id, body);
+  body.querySelector('[data-add-rec]').onclick = () => addReceipt(w.id, body);
+  body.querySelectorAll('[data-del-line]').forEach(b => b.onclick = () => delLine(b.dataset.delLine));
+  body.querySelectorAll('[data-del-rec]').forEach(b => b.onclick = () => delReceipt(b.dataset.delRec));
+
+  recs.forEach(async r => {
+    if(r.photo_path && !r._thumb){
+      const { data } = await sb.storage.from('receipts').createSignedUrl(r.photo_path, 3600);
+      if(data?.signedUrl){ r._thumb = data.signedUrl; if(state.open.has(w.id)) renderWallBody(w); }
+    }
+  });
+}
+
+/* ---------- mutations ---------- */
+async function addLine(wallId, scope){
+  const get = f => scope.querySelector(`[data-f="${f}"]`).value;
+  const description = get('description').trim();
+  if(!description) return toast('Give the line a description');
+  const payload = {
+    room_id: state.room.id, wall_id: wallId, description,
+    qty: parseFloat(get('qty'))||1, unit: get('unit').trim()||null,
+    low: parseFloat(get('low'))||null, target: parseFloat(get('target'))||null,
+    high: parseFloat(get('high'))||null, status: get('status')
+  };
+  const { error } = await sb.from('budget_lines').insert(payload);
+  if(error) return toast(error.message);
+  toast('Line added'); await loadAll();
+}
+async function delLine(id){
+  const { error } = await sb.from('budget_lines').delete().eq('id', id);
+  if(error) return toast(error.message);
+  toast('Line removed'); await loadAll();
+}
+async function addReceipt(wallId, scope){
+  const get = f => scope.querySelector(`[data-rf="${f}"]`);
+  const amount = parseFloat(get('amount').value);
+  if(!amount) return toast('Enter the amount');
+  const payload = {
+    room_id: state.room.id, wall_id: wallId,
+    vendor: get('vendor').value.trim()||null, amount,
+    purchased_at: get('purchased_at').value || new Date().toISOString().slice(0,10)
+  };
+  const { data, error } = await sb.from('receipts').insert(payload).select().single();
+  if(error) return toast(error.message);
+
+  const file = get('photo').files[0];
+  if(file && data){
+    const ext = (file.name.split('.').pop()||'jpg').toLowerCase();
+    const path = `${data.id}.${ext}`;
+    const up = await sb.storage.from('receipts').upload(path, file, { upsert:true });
+    if(!up.error){ await sb.from('receipts').update({ photo_path: path }).eq('id', data.id); }
+    else { toast('Receipt saved, photo failed: '+up.error.message); }
+  }
+  toast('Receipt logged'); await loadAll();
+}
+async function delReceipt(id){
+  const { error } = await sb.from('receipts').delete().eq('id', id);
+  if(error) return toast(error.message);
+  toast('Receipt removed'); await loadAll();
+}
+
+/* ---------- realtime ---------- */
+let channel;
+function subscribe(){
+  if(channel) return;
+  channel = sb.channel('cost')
+    .on('postgres_changes',{event:'*',schema:'public',table:'budget_lines'}, loadAll)
+    .on('postgres_changes',{event:'*',schema:'public',table:'receipts'}, loadAll)
+    .subscribe();
+}
+
+sb.auth.onAuthStateChange(()=>{});
+refreshAuth();
+</script>
+</body>
+</html>
