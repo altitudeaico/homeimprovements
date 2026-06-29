@@ -1,6 +1,6 @@
-# Wall B — Dining kitchen wall (fridge / hatch / chimney column)
+# Wall B — Garden / patio-door wall
 
-**Status:** Concept · PROVISIONAL letter · **Reads from:** MASTER_PLAN.md (palette, build order, Measurement Register)
+**Status:** Concept · reference render (directional) · **Reads from:** MASTER_PLAN.md (palette, build order, Measurement Register)
 
 > Fill every section. Use `TBD` for anything not yet surveyed — never invent a
 > measurement or a price. Pull shared values (palette, ceiling height, width) from
@@ -74,3 +74,7 @@ Final dressing, objects, lighting scenes.
 
 ## 16. Lessons learned
 Discoveries, design changes, alternatives, improvements for the next wall.
+
+
+---
+> **Reference render(s):** see `reference/` in this folder — AI-generated, directional, evolving, **not final**.

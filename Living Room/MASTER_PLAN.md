@@ -21,7 +21,7 @@ Two foundations must be locked before any wall's detailed sections are trustwort
 
 | Foundation | State | Blocks |
 |---|---|---|
-| Dining-half wall letters (A, B, C) | **PROVISIONAL** — needs owner confirmation | Floor plan labels, Wall A/B/C sections |
+| Dining-half wall letters | **CONFIRMED** from labelled renders | — (resolved) |
 | Measurement Register (§5) | **MOSTLY BLANK** — survey not done | All build, board, cut, shopping tasks |
 
 Everything else below (vision, palette, geometry shape, methodology, Wall F content)
@@ -109,18 +109,16 @@ E = lounge side). **D, E, F, G, H are confirmed; A, B, C are provisional.**
 
 | Wall | Physical face | Key features | Length | Status | Confidence |
 |---|---|---|---|---|---|
-| **A** | Divider — dining side | brick arch, brass sconces | 3180 | Concept | *provisional* |
-| **B** | Dining kitchen wall | fridge, kitchen door, chimney column, serving hatch | 3440 | Concept | *provisional* |
-| **C** | Dining hall-doors wall | two white panel doors | 3440 | Concept | *provisional* |
-| **D** | Dining garden wall | patio doors → conservatory; curtains | 3180 | Approved | high |
+| **A** | Kitchen / hatch wall | fridge, kitchen door, chimney column, serving hatch | 3440 | Concept | high |
+| **B** | Garden / patio-door wall | sliding patio doors → conservatory; brick hatch base | 3180 | Concept | high |
+| **C** | TV / media wall (two doors) | two doors to hall, slatted TV panel + sideboard | 3440 | Concept | high |
+| **D** | Divider — dining side | brick archway, brass sconces | 3180 | Approved | high |
 | **E** | Divider — lounge side | brick arch, brass sconces | 3180 | Approved | high |
 | **F** | Lounge **media wall** | chimney breast, fire, TV, 2 alcoves | ~3200 (TBD) | **Reference · documented** | high |
 | **G** | Lounge front window | leaded diamond window; curtains | 3180 | Approved | high |
 | **H** | Lounge door wall | hall door, black sofa, artwork | depth (TBD) | Approved | high |
 
-> **Action:** confirm or correct A, B, C (which of: dining arch-face / kitchen wall /
-> hall-doors wall maps to which letter). The provisional mapping above is the working
-> assumption until then.
+> Wall lettering confirmed from labelled reference renders. Each wall folder holds its render(s) under `reference/`.
 
 ### Dependencies between walls
 
@@ -179,10 +177,10 @@ Master workflow:
 
 Each links to its folder. Detail lives there, not here.
 
-- `Wall_A/` — divider, dining side. *Concept; awaiting confirmation + decomposition.*
-- `Wall_B/` — dining kitchen wall. *Concept; awaiting confirmation + decomposition.*
-- `Wall_C/` — dining hall-doors wall. *Concept; awaiting confirmation + decomposition.*
-- `Wall_D/` — dining garden wall. *Approved; window-treatment spec pending.*
+- `Wall_A/` — kitchen / hatch wall. *Concept; reference render filed.*
+- `Wall_B/` — garden / patio-door wall. *Concept; reference render filed.*
+- `Wall_C/` — TV / media wall (two doors). *Concept; reference render filed.*
+- `Wall_D/` — divider, dining side (brick arch). *Approved; reference render filed.*
 - `Wall_E/` — divider, lounge side. *Approved; decorating + lighting spec pending.*
 - `Wall_F/` — **media wall.** Reference implementation. Design + all six build manuals
   complete (`Wall_F.md` + `manuals/`): master elevation (two variants A/B), remove,
@@ -247,6 +245,7 @@ Each links to its folder. Detail lives there, not here.
 
 ### Decisions made
 - Palette locked to **Studio Green No.93 + oak + black + brass + 3000K** (this *supersedes* an earlier charcoal / 2700K placeholder).
+- **Wall lettering confirmed** from labelled reference renders: A kitchen/hatch · B garden/patio · C TV-media (two doors) · D dining-side arch · E lounge-side arch · F media wall · G front window · H hall door.
 - **Keep the brick archway raw** as the hero feature — not painted or clad.
 - **Keep the leaded diamond front window** as a character feature; refresh only the dressing.
 - **Continuous medium-dark oak floor** across both halves and through the arch.
@@ -262,7 +261,6 @@ Each links to its folder. Detail lives there, not here.
   keep original features (arch, leaded window, chimney breast) · LED sparing and concealed.
 
 ### Open questions
-- Confirm dining-half letters **A / B / C**.
 - **Lounge depth**, **ceiling height**, and **all opening dimensions** (Register §5).
 - **Floor:** refinish existing lounge boards vs replace + match throughout.
 - **Front window:** flat or shallow bay?

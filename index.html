@@ -130,6 +130,11 @@
     color:var(--provisional); border:1px dashed var(--provisional); padding:3px 6px; border-radius:2px; text-transform:uppercase}
   .card a.file{font-family:var(--mono); font-size:11px; color:var(--oak); text-decoration:none; border-bottom:1px solid transparent}
   .card a.file:hover{border-bottom-color:var(--oak)}
+  .thumb{width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:3px; border:1px solid var(--line-strong); margin-bottom:13px; cursor:zoom-in; display:block; background:var(--green-soft)}
+  .ref-badge{position:absolute; top:13px; right:13px; font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--brass); background:rgba(25,36,29,.82); border:1px solid var(--provisional); padding:3px 7px; border-radius:2px}
+  .lightbox{position:fixed; inset:0; background:rgba(10,15,12,.93); display:none; align-items:center; justify-content:center; z-index:90; padding:28px; cursor:zoom-out}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:96vw; max-height:92vh; border:1px solid var(--line-strong); border-radius:4px}
 
   /* build order */
   .steps{counter-reset:step; display:grid; gap:0; border-top:1px solid var(--line)}
@@ -266,10 +271,10 @@
         <text class="pl-dimtext" x="313" y="516" text-anchor="middle">3440</text>
         <text class="pl-dimtext" x="738" y="516" text-anchor="middle" fill="#D8B25A">TBD</text>
 
-        <g class="tag prov" data-wall="A" tabindex="0" role="button" aria-label="Wall A"><circle cx="494" cy="278" r="14"/><text x="494" y="278">A</text></g>
-        <g class="tag prov" data-wall="B" tabindex="0" role="button" aria-label="Wall B"><circle cx="313" cy="64" r="14"/><text x="313" y="64">B</text></g>
-        <g class="tag prov" data-wall="C" tabindex="0" role="button" aria-label="Wall C"><circle cx="313" cy="492" r="14"/><text x="313" y="492">C</text></g>
-        <g class="tag" data-wall="D" tabindex="0" role="button" aria-label="Wall D"><circle cx="75" cy="268" r="14"/><text x="75" y="268">D</text></g>
+        <g class="tag" data-wall="A" tabindex="0" role="button" aria-label="Wall A"><circle cx="313" cy="64" r="14"/><text x="313" y="64">A</text></g>
+        <g class="tag" data-wall="B" tabindex="0" role="button" aria-label="Wall B"><circle cx="75" cy="268" r="14"/><text x="75" y="268">B</text></g>
+        <g class="tag" data-wall="C" tabindex="0" role="button" aria-label="Wall C"><circle cx="313" cy="492" r="14"/><text x="313" y="492">C</text></g>
+        <g class="tag" data-wall="D" tabindex="0" role="button" aria-label="Wall D"><circle cx="494" cy="278" r="14"/><text x="494" y="278">D</text></g>
         <g class="tag" data-wall="E" tabindex="0" role="button" aria-label="Wall E"><circle cx="542" cy="278" r="14"/><text x="542" y="278">E</text></g>
         <g class="tag" data-wall="F" tabindex="0" role="button" aria-label="Wall F"><circle cx="720" cy="64" r="14"/><text x="720" y="64">F</text></g>
         <g class="tag" data-wall="G" tabindex="0" role="button" aria-label="Wall G"><circle cx="980" cy="278" r="14"/><text x="980" y="278">G</text></g>
@@ -288,7 +293,7 @@
 <section id="walls">
   <div class="wrap">
     <div class="sec-head reveal"><span class="sec-num">02</span><h2>Wall register</h2></div>
-    <p class="sec-sub reveal">Eight wall faces; the divider contributes one to each room (A dining side, E lounge side). Letters A–C are provisional until the dining-half mapping is confirmed.</p>
+    <p class="sec-sub reveal">Eight wall faces; the divider contributes one to each room (D dining side, E lounge side). Thumbnails are AI reference renders — directional, rapidly evolving, <strong>not final</strong>. Tap to enlarge.</p>
     <div class="grid" id="cards">
       <!-- cards injected -->
     </div>
@@ -357,14 +362,14 @@
 
 <script>
 const walls = [
-  {l:"A", name:"Divider — dining side", len:"3.18 m", status:"con", prov:true,  note:"Exposed-brick archway and brass sconces, seen from the dining room.", file:"Living%20Room/Wall_A/Wall_A.md"},
-  {l:"B", name:"Dining kitchen wall",   len:"3.44 m", status:"con", prov:true,  note:"Fridge, kitchen doorway, boxed chimney column, serving hatch.", file:"Living%20Room/Wall_B/Wall_B.md"},
-  {l:"C", name:"Dining hall-doors wall",len:"3.44 m", status:"con", prov:true,  note:"Two white panel doors through to the hall.", file:"Living%20Room/Wall_C/Wall_C.md"},
-  {l:"D", name:"Dining garden wall",    len:"3.18 m", status:"app", prov:false, note:"Sliding patio doors to the conservatory; new curtains.", file:"Living%20Room/Wall_D/Wall_D.md"},
-  {l:"E", name:"Divider — lounge side", len:"3.18 m", status:"app", prov:false, note:"The brick arch and brass sconces, seen from the lounge.", file:"Living%20Room/Wall_E/Wall_E.md"},
-  {l:"F", name:"Lounge media wall",     len:"depth TBD", status:"ref", prov:false, note:"Chimney breast, linear fire, TV, two mirrored alcoves. Reference build.", file:"Living%20Room/Wall_F/Wall_F.md"},
-  {l:"G", name:"Lounge front window",   len:"3.18 m", status:"app", prov:false, note:"Leaded diamond window kept as character; new dressing.", file:"Living%20Room/Wall_G/Wall_G.md"},
-  {l:"H", name:"Lounge door wall",      len:"depth TBD", status:"app", prov:false, note:"Hall door, black sofa, three artworks.", file:"Living%20Room/Wall_H/Wall_H.md"},
+  {l:"A", name:"Kitchen / hatch wall",       len:"3.44 m", status:"con", note:"Fridge, kitchen doorway, boxed chimney column, arched serving hatch.", file:"Living%20Room/Wall_A/Wall_A.md"},
+  {l:"B", name:"Garden / patio-door wall",   len:"3.18 m", status:"con", note:"Sliding patio doors to the conservatory; brick hatch base, brass sconces.", file:"Living%20Room/Wall_B/Wall_B.md"},
+  {l:"C", name:"TV / media wall (two doors)",len:"3.44 m", status:"con", note:"Two doors to the hall with a slatted TV panel and sideboard between.", file:"Living%20Room/Wall_C/Wall_C.md"},
+  {l:"D", name:"Divider — dining side",      len:"3.18 m", status:"app", note:"Brick archway into the lounge; brass sconces.", file:"Living%20Room/Wall_D/Wall_D.md"},
+  {l:"E", name:"Divider — lounge side",      len:"3.18 m", status:"app", note:"The brick arch seen from the lounge.", file:"Living%20Room/Wall_E/Wall_E.md"},
+  {l:"F", name:"Lounge media wall",          len:"\u22483.2 m", status:"ref", note:"Chimney breast, linear fire, TV, mirrored alcoves. Reference build.", file:"Living%20Room/Wall_F/Wall_F.md"},
+  {l:"G", name:"Front window wall",          len:"3.18 m", status:"app", note:"Leaded diamond window; curtains or wood blinds.", file:"Living%20Room/Wall_G/Wall_G.md"},
+  {l:"H", name:"Hall door wall",             len:"\u22483.2 m", status:"app", note:"Hall door (oak or walnut), sofa, artwork cluster.", file:"Living%20Room/Wall_H/Wall_H.md"},
 ];
 const sLabel = {app:["Approved","s-app"], con:["Concept","s-con"], ref:["Reference build","s-ref"]};
 const base = "https://github.com/altitudeaico/homeimprovements/blob/main/";
@@ -374,14 +379,22 @@ walls.forEach(w=>{
   const el = document.createElement("article");
   el.className="card"; el.id="wall-"+w.l; el.dataset.wall=w.l;
   el.innerHTML = `
+    <img class="thumb" src="assets/walls/${w.l}.png" alt="Reference render for Wall ${w.l}" loading="lazy">
+    <span class="ref-badge">reference</span>
     <div class="id">${w.l}</div>
     <h3>${w.name}</h3>
     <div class="len">${w.len}</div>
     <p>${w.note}</p>
-    <div><span class="status ${cls}">${txt}</span>${w.prov?'<span class="prov-flag">provisional</span>':''}</div>
+    <div><span class="status ${cls}">${txt}</span></div>
     <div style="margin-top:14px"><a class="file" href="${base+w.file}" target="_blank" rel="noopener">${w.file.split('/').pop().replace('%20',' ')} ↗</a></div>`;
   cards.appendChild(el);
 });
+
+// lightbox for reference thumbnails
+const lb=document.getElementById("lb"), lbimg=lb.querySelector("img");
+document.querySelectorAll(".thumb").forEach(t=>t.addEventListener("click",e=>{e.stopPropagation(); lbimg.src=t.getAttribute("src"); lb.classList.add("open");}));
+lb.addEventListener("click",()=>lb.classList.remove("open"));
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") lb.classList.remove("open"); });
 
 // link plan tags <-> cards
 const tags = document.querySelectorAll(".tag");
@@ -406,5 +419,6 @@ tags.forEach(t=>{
 const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add("in"); io.unobserve(e.target);} }), {threshold:.12});
 document.querySelectorAll(".reveal").forEach(n=>io.observe(n));
 </script>
+<div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Reference render"><img alt="Wall reference render"></div>
 </body>
 </html>

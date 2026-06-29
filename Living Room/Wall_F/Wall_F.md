@@ -76,3 +76,7 @@ Shelf styling per elevation (plants, books, ceramics, framed art), warm-lit.
 
 ## 16. Lessons learned
 To be captured during/after the build — this wall sets the pattern for the rest.
+
+
+---
+> **Reference render(s):** see `reference/` in this folder — AI-generated, directional, evolving, **not final**.

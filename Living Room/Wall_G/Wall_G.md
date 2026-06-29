@@ -74,3 +74,7 @@ Final dressing, objects, lighting scenes.
 
 ## 16. Lessons learned
 Discoveries, design changes, alternatives, improvements for the next wall.
+
+
+---
+> **Reference render(s):** see `reference/` in this folder — AI-generated, directional, evolving, **not final**.
