@@ -114,7 +114,7 @@ E = lounge side). **D, E, F, G, H are confirmed; A, B, C are provisional.**
 | **C** | Dining hall-doors wall | two white panel doors | 3440 | Concept | *provisional* |
 | **D** | Dining garden wall | patio doors → conservatory; curtains | 3180 | Approved | high |
 | **E** | Divider — lounge side | brick arch, brass sconces | 3180 | Approved | high |
-| **F** | Lounge **media wall** | chimney breast, fire, TV, 2 alcoves | depth (TBD) | **Reference build** | high |
+| **F** | Lounge **media wall** | chimney breast, fire, TV, 2 alcoves | ~3200 (TBD) | **Reference · documented** | high |
 | **G** | Lounge front window | leaded diamond window; curtains | 3180 | Approved | high |
 | **H** | Lounge door wall | hall door, black sofa, artwork | depth (TBD) | Approved | high |
 
@@ -184,10 +184,11 @@ Each links to its folder. Detail lives there, not here.
 - `Wall_C/` — dining hall-doors wall. *Concept; awaiting confirmation + decomposition.*
 - `Wall_D/` — dining garden wall. *Approved; window-treatment spec pending.*
 - `Wall_E/` — divider, lounge side. *Approved; decorating + lighting spec pending.*
-- `Wall_F/` — **media wall.** Reference implementation. Survey, fireplace/chimney
-  investigation, remove/expose/frame/board/cut/install guides, corbel-removal guide
-  done; left + right alcoves, budget, procurement, weekend schedule in progress.
-  *(See `Wall_F_Renovation_Planning_Workbook.xlsx`.)*
+- `Wall_F/` — **media wall.** Reference implementation. Design + all six build manuals
+  complete (`Wall_F.md` + `manuals/`): master elevation (two variants A/B), remove,
+  corbel removal, expose, build frame, board & finish, cut opening, install fire.
+  *Pending: variant choice, on-site survey, budget/procurement/schedule.*
+  *(See `Wall_F.md` and `Wall_F_Renovation_Planning_Workbook.xlsx`.)*
 - `Wall_G/` — lounge front window. *Approved; curtain spec pending.*
 - `Wall_H/` — lounge door wall. *Approved; door + artwork refinements pending.*
 
@@ -203,7 +204,7 @@ Each links to its folder. Detail lives there, not here.
 | M01 | Whole room | Ceiling height | TBD | No |
 | M02 | Whole room | Width (constant, set by divider) | 3180 | Yes (owner) |
 | M03 | Dining half | Depth (walls B & C length) | 3440 | Yes (owner) |
-| M04 | Lounge | Depth (walls F & H length = Wall F overall width) | TBD | No |
+| M04 | Lounge | Depth (walls F & H length = Wall F overall width) | ~3200* | from elevation |
 | M05 | Divider | Brick arch — width | TBD | No |
 | M06 | Divider | Brick arch — height to apex | TBD | No |
 | M07 | Divider | Brick arch — offset from corner | TBD | No |
@@ -249,7 +250,7 @@ Each links to its folder. Detail lives there, not here.
 - **Keep the brick archway raw** as the hero feature — not painted or clad.
 - **Keep the leaded diamond front window** as a character feature; refresh only the dressing.
 - **Continuous medium-dark oak floor** across both halves and through the arch.
-- **Media wall (F):** build a new timber frame in front of the chimney; linear electric fire (ventilated per manual); TV centred; two mirrored alcoves with black cabinetry, oak shelves, brass handles, concealed LED.
+- **Media wall (F):** new 47×70 CLS frame in front of the chimney (chimney opening kept clear at the bottom); linear electric fire (Evonic e1800 example, ventilated); TV centred; two mirrored alcoves — 40mm oak shelves over push-to-open cabinets; brass sconces flanking the TV; 3000K LED. Design dims: 3200 W × 1550 H × 450 D; modules 800/1600/800.
 - **Modular per-wall mini-project method;** Wall F is the prototype.
 - **DIY-first;** professional only where required (e.g., fixed-circuit electrical).
 
@@ -266,6 +267,8 @@ Each links to its folder. Detail lives there, not here.
 - **Floor:** refinish existing lounge boards vs replace + match throughout.
 - **Front window:** flat or shallow bay?
 - **Exact electric fire model** (gates the Wall F aperture).
+- **Wall F variant:** choose A (modern oak-slatted/fluted) or B (traditional shaker).
+- **Lounge depth ≈3200** is inferred from the Wall F elevation — confirm on site (M04).
 - Any wall besides F that warrants a full *build* vs decoration-only.
 
 ### Future enhancements

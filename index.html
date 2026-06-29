@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Living Room Renovation — altitudeaico / homeimprovements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#19241D; --green:#22312A; --green-soft:#2B3D33;
+    --oak:#CB9B5C; --brass:#D8B25A; --brass-deep:#A9802F;
+    --paper:#ECE6D8; --paper-dim:#C7C2B4; --muted:#8B9389;
+    --line:rgba(236,230,216,.14); --line-strong:rgba(236,230,216,.28);
+    --approved:#9FB58F; --provisional:#D8B25A;
+    --display:"Fraunces",Georgia,serif; --body:"Inter",system-ui,sans-serif; --mono:"Space Mono",ui-monospace,monospace;
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0; background:var(--green-deep); color:var(--paper);
+    font-family:var(--body); line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--brass)}
+
+  /* nav */
+  header.bar{position:sticky; top:0; z-index:40; backdrop-filter:blur(8px);
+    background:rgba(25,36,29,.82); border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex; align-items:center; gap:22px; height:58px}
+  .brandmark{font-family:var(--mono); font-size:12px; letter-spacing:.12em; color:var(--paper); text-decoration:none; white-space:nowrap}
+  .brandmark b{color:var(--brass)}
+  nav.links{margin-left:auto; display:flex; gap:22px; align-items:center}
+  nav.links a{font-size:13px; color:var(--paper-dim); text-decoration:none; letter-spacing:.02em}
+  nav.links a:hover{color:var(--paper)}
+  .repo-btn{font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--green-deep)!important;
+    background:var(--brass); padding:8px 14px; border-radius:2px; text-decoration:none; transition:background .2s}
+  .repo-btn:hover{background:var(--oak)}
+  @media(max-width:760px){nav.links a:not(.repo-btn){display:none}}
+
+  /* hero */
+  .hero{padding:84px 0 64px; position:relative; border-bottom:1px solid var(--line)}
+  .frame{border:1px solid var(--line-strong); position:relative; padding:46px 42px 40px}
+  .frame::before,.frame::after{content:""; position:absolute; width:10px; height:10px; border:1px solid var(--brass)}
+  .frame::before{top:-1px; left:-1px; border-right:0; border-bottom:0}
+  .frame::after{bottom:-1px; right:-1px; border-left:0; border-top:0}
+  h1{font-family:var(--display); font-weight:500; font-size:clamp(34px,5.4vw,62px); line-height:1.02;
+    margin:18px 0 0; letter-spacing:-.01em; max-width:16ch}
+  h1 em{font-style:italic; color:var(--oak)}
+  .lead{margin:20px 0 0; max-width:60ch; color:var(--paper-dim); font-size:17px}
+  .palette{display:flex; flex-wrap:wrap; gap:10px; margin-top:30px}
+  .chip{display:flex; align-items:center; gap:9px; border:1px solid var(--line); padding:7px 12px; border-radius:2px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.03em; color:var(--paper-dim)}
+  .sw{width:13px; height:13px; border-radius:50%; box-shadow:0 0 0 1px rgba(0,0,0,.25) inset}
+  .stats{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; margin-top:36px; background:var(--line); border:1px solid var(--line)}
+  .stat{background:var(--green-deep); padding:16px 14px}
+  .stat .k{font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted)}
+  .stat .v{font-family:var(--display); font-size:26px; margin-top:4px; letter-spacing:-.01em}
+  .stat .v small{font-size:13px; color:var(--paper-dim); font-family:var(--mono); letter-spacing:0}
+  .tbd{color:var(--brass)}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)} h1{font-size:34px}}
+
+  /* sections */
+  section{padding:72px 0; border-bottom:1px solid var(--line)}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px}
+  .sec-head h2{font-family:var(--display); font-weight:500; font-size:clamp(24px,3.2vw,34px); margin:0; letter-spacing:-.01em}
+  .sec-num{font-family:var(--mono); font-size:12px; color:var(--brass)}
+  .sec-sub{color:var(--paper-dim); max-width:64ch; margin:0 0 30px}
+
+  /* floor plan */
+  .plan-card{background:
+      linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 26px,
+      linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/26px 100%,
+      var(--green); border:1px solid var(--line-strong); padding:10px}
+  .plan-card svg{display:block; width:100%; height:auto}
+  .pl-wall{fill:none; stroke:var(--paper); stroke-width:2.4}
+  .pl-thin{fill:none; stroke:var(--paper-dim); stroke-width:1.2}
+  .pl-room{fill:rgba(43,61,51,.5)}
+  .pl-room.alt{fill:rgba(43,61,51,.28)}
+  .pl-swing{fill:none; stroke:var(--oak); stroke-width:1.2; stroke-dasharray:3 3}
+  .pl-open{stroke:var(--green); stroke-width:3.4}
+  .pl-dim{stroke:var(--paper-dim); stroke-width:.8}
+  .pl-dimtext{fill:var(--paper-dim); font-family:var(--mono); font-size:12px}
+  .pl-feat{fill:rgba(203,155,92,.16); stroke:var(--oak); stroke-width:1.1}
+  .pl-note{fill:var(--muted); font-family:var(--mono); font-size:11px}
+  .tag{cursor:pointer}
+  .tag circle{fill:var(--green-deep); stroke:var(--brass); stroke-width:1.4; transition:fill .15s,stroke .15s}
+  .tag text{fill:var(--brass); font-family:var(--mono); font-weight:700; font-size:13px; text-anchor:middle; dominant-baseline:central; transition:fill .15s}
+  .tag.prov circle{stroke:var(--provisional); stroke-dasharray:2.5 2.5}
+  .tag:hover circle,.tag.active circle{fill:var(--brass)}
+  .tag:hover text,.tag.active text{fill:var(--green-deep)}
+  .plan-legend{display:flex; flex-wrap:wrap; gap:18px; margin-top:14px; font-family:var(--mono); font-size:11px; color:var(--muted)}
+  .plan-legend span{display:flex; align-items:center; gap:7px}
+  .ll{width:18px; height:0; border-top:2px solid}
+
+  /* wall register */
+  .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+  @media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  .card{position:relative; border:1px solid var(--line-strong); background:var(--green); padding:18px 16px 16px;
+    border-radius:3px; transition:border-color .18s, transform .18s, box-shadow .18s; scroll-margin-top:80px}
+  .card:hover,.card.active{border-color:var(--brass); transform:translateY(-2px); box-shadow:0 10px 30px -16px rgba(0,0,0,.6)}
+  .card .id{font-family:var(--mono); font-weight:700; font-size:30px; color:var(--brass); line-height:1}
+  .card h3{font-family:var(--display); font-weight:500; font-size:18px; margin:10px 0 6px}
+  .card .len{font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.04em}
+  .card p{font-size:13.5px; color:var(--paper-dim); margin:10px 0 14px}
+  .status{display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    padding:4px 8px; border-radius:2px; border:1px solid}
+  .s-app{color:var(--approved); border-color:rgba(159,181,143,.5)}
+  .s-con{color:var(--muted); border-color:var(--line-strong)}
+  .s-ref{color:var(--green-deep); background:var(--brass); border-color:var(--brass)}
+  .prov-flag{display:inline-block; margin-left:6px; font-family:var(--mono); font-size:9px; letter-spacing:.08em;
+    color:var(--provisional); border:1px dashed var(--provisional); padding:3px 6px; border-radius:2px; text-transform:uppercase}
+  .card a.file{font-family:var(--mono); font-size:11px; color:var(--oak); text-decoration:none; border-bottom:1px solid transparent}
+  .card a.file:hover{border-bottom-color:var(--oak)}
+
+  /* build order */
+  .steps{counter-reset:step; display:grid; gap:0; border-top:1px solid var(--line)}
+  .step{counter-increment:step; display:grid; grid-template-columns:54px 1fr; gap:18px; align-items:baseline;
+    padding:16px 0; border-bottom:1px solid var(--line)}
+  .step::before{content:counter(step,decimal-leading-zero); font-family:var(--mono); color:var(--brass); font-size:13px; padding-top:2px}
+  .step h4{font-family:var(--display); font-weight:500; font-size:18px; margin:0 0 3px}
+  .step p{margin:0; color:var(--paper-dim); font-size:14px}
+
+  /* budget + survey */
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:40px}
+  @media(max-width:820px){.two{grid-template-columns:1fr; gap:48px}}
+  .bud-row{display:flex; justify-content:space-between; align-items:baseline; padding:13px 0; border-bottom:1px solid var(--line)}
+  .bud-row .lbl{font-size:14px}
+  .bud-row .lbl small{display:block; color:var(--muted); font-family:var(--mono); font-size:10px; letter-spacing:.04em}
+  .bud-row .fig{font-family:var(--mono); font-size:14px; color:var(--paper)}
+  .bud-row .fig.tbd{color:var(--brass)}
+  .barwrap{margin-top:8px}
+  .bar{height:8px; background:var(--green-soft); border:1px solid var(--line); border-radius:4px; overflow:hidden}
+  .bar i{display:block; height:100%; width:12%; background:linear-gradient(90deg,var(--brass-deep),var(--brass))}
+  .survey-list{list-style:none; padding:0; margin:18px 0 0; columns:2; column-gap:24px}
+  @media(max-width:560px){.survey-list{columns:1}}
+  .survey-list li{font-family:var(--mono); font-size:12px; color:var(--paper-dim); padding:6px 0; break-inside:avoid; display:flex; gap:8px; align-items:center}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--brass); flex:none}
+  .dot.ok{background:var(--approved)}
+
+  footer{padding:54px 0 70px}
+  footer .wrap{display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center}
+  footer .note{font-family:var(--mono); font-size:11px; color:var(--muted); max-width:52ch}
+  footer a{color:var(--oak); text-decoration:none}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1; transform:none; transition:none}}
+  :focus-visible{outline:2px solid var(--brass); outline-offset:3px}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brandmark" href="#top">altitudeaico / <b>homeimprovements</b></a>
+    <nav class="links">
+      <a href="#plan">Floor plan</a>
+      <a href="#walls">Walls</a>
+      <a href="#order">Build order</a>
+      <a href="#budget">Budget</a>
+      <a class="repo-btn" href="https://github.com/altitudeaico/homeimprovements" target="_blank" rel="noopener">View repo ↗</a>
+    </nav>
+  </div>
+</header>
+
+<a id="top"></a>
+<section class="hero">
+  <div class="wrap">
+    <div class="frame reveal">
+      <div class="eyebrow">Living Room · Design &amp; construction plan</div>
+      <h1>One room, eight walls, <em>planned like a building.</em></h1>
+      <p class="lead">A warm, contemporary, classic living room — built DIY, surveyed and documented in full before a single board is cut. This page is the front door to the plan; the repository is the source of truth.</p>
+      <div class="palette" aria-label="Material palette">
+        <span class="chip"><span class="sw" style="background:#19241D"></span>Studio Green No.93</span>
+        <span class="chip"><span class="sw" style="background:#CB9B5C"></span>Oak</span>
+        <span class="chip"><span class="sw" style="background:#111"></span>Black joinery</span>
+        <span class="chip"><span class="sw" style="background:#D8B25A"></span>Brass / gold</span>
+        <span class="chip"><span class="sw" style="background:#F6E4C2"></span>Warm 3000K</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">Width</div><div class="v">3.18<small> m</small></div></div>
+        <div class="stat"><div class="k">Dining depth</div><div class="v">3.44<small> m</small></div></div>
+        <div class="stat"><div class="k">Lounge depth</div><div class="v tbd">TBD</div></div>
+        <div class="stat"><div class="k">Wall faces</div><div class="v">8</div></div>
+        <div class="stat"><div class="k">Reference build</div><div class="v">F</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plan">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">01</span><h2>Floor plan</h2></div>
+    <p class="sec-sub reveal">One through-lounge, divided by the exposed-brick archway. Tap a wall marker to jump to its card. Schematic only — not to scale for construction; build dimensions come from the Measurement Register.</p>
+    <div class="plan-card reveal">
+      <svg viewBox="0 0 1060 560" role="img" aria-label="Top-down floor plan of the living room showing walls A to H, front of house on the right">
+        <!-- MIRRORED GEOMETRY (front/street now on the right) -->
+        <g transform="translate(1060,0) scale(-1,1)">
+          <rect class="pl-room" x="110" y="95" width="425" height="366"/>
+          <rect class="pl-room alt" x="549" y="95" width="396" height="366"/>
+          <path class="pl-wall" d="M110 95 H535 M549 95 H945 V461 H549 M535 461 H110 V95"/>
+          <rect class="pl-wall" x="535" y="95" width="14" height="105"/>
+          <rect class="pl-wall" x="535" y="330" width="14" height="131"/>
+          <line class="pl-open" x1="542" y1="200" x2="542" y2="330"/>
+          <path class="pl-thin" d="M535 330 A 130 130 0 0 1 535 200"/>
+          <!-- front window (G) -->
+          <line class="pl-thin" x1="106" y1="200" x2="106" y2="356"/>
+          <line class="pl-thin" x1="114" y1="200" x2="114" y2="356"/>
+          <line class="pl-open" x1="110" y1="205" x2="110" y2="351"/>
+          <!-- patio doors (D) -->
+          <line class="pl-open" x1="945" y1="175" x2="945" y2="360"/>
+          <line class="pl-thin" x1="939" y1="175" x2="939" y2="270"/>
+          <line class="pl-thin" x1="951" y1="270" x2="951" y2="360"/>
+          <!-- chimney breast (F) -->
+          <rect class="pl-feat" x="280" y="95" width="120" height="48"/>
+          <rect class="pl-feat" x="322" y="112" width="36" height="20"/>
+          <!-- kitchen wall (B) -->
+          <rect class="pl-feat" x="555" y="95" width="40" height="42"/>
+          <rect class="pl-feat" x="690" y="95" width="26" height="26"/>
+          <line class="pl-open" x1="752" y1="99" x2="822" y2="99"/>
+          <path class="pl-swing" d="M880 95 V140 A45 45 0 0 0 880 95"/>
+          <path class="pl-swing" d="M880 95 L880 140"/>
+          <!-- hall doors (C) -->
+          <path class="pl-swing" d="M620 461 L620 416 A45 45 0 0 1 665 461"/>
+          <path class="pl-swing" d="M810 461 L810 416 A45 45 0 0 1 855 461"/>
+          <!-- lounge door (H) -->
+          <path class="pl-swing" d="M360 461 L360 416 A45 45 0 0 1 405 461"/>
+          <!-- dimension lines -->
+          <line class="pl-dim" x1="78" y1="95" x2="78" y2="461"/>
+          <path class="pl-dim" d="M74 99 L78 95 L82 99 M74 457 L78 461 L82 457"/>
+          <line class="pl-dim" x1="549" y1="498" x2="945" y2="498"/>
+          <path class="pl-dim" d="M553 494 L549 498 L553 502 M941 494 L945 498 L941 502"/>
+          <line class="pl-dim" x1="110" y1="498" x2="535" y2="498" stroke-dasharray="5 4"/>
+          <path class="pl-dim" d="M114 494 L110 498 L114 502 M531 494 L535 498 L531 502"/>
+        </g>
+
+        <!-- TEXT + INTERACTIVE TAGS (upright, at mirrored positions) -->
+        <text class="pl-note" x="560" y="278" transform="rotate(-90 560 278)" text-anchor="middle">brick arch</text>
+        <text class="pl-note" x="720" y="160" text-anchor="middle">fireplace</text>
+        <text class="pl-note" x="273" y="118" text-anchor="middle">hatch</text>
+        <text class="pl-note" x="485" y="150" text-anchor="middle">frdg</text>
+        <text class="pl-note" x="125" y="86">BACK / GARDEN</text>
+        <text class="pl-note" x="940" y="86" text-anchor="end">FRONT / STREET</text>
+        <text class="pl-note" x="115" y="540">LIVING ROOM · PLAN · NTS</text>
+
+        <text class="pl-dimtext" x="996" y="278" text-anchor="middle" transform="rotate(-90 996 278)">3180</text>
+        <text class="pl-dimtext" x="313" y="516" text-anchor="middle">3440</text>
+        <text class="pl-dimtext" x="738" y="516" text-anchor="middle" fill="#D8B25A">TBD</text>
+
+        <g class="tag prov" data-wall="A" tabindex="0" role="button" aria-label="Wall A"><circle cx="494" cy="278" r="14"/><text x="494" y="278">A</text></g>
+        <g class="tag prov" data-wall="B" tabindex="0" role="button" aria-label="Wall B"><circle cx="313" cy="64" r="14"/><text x="313" y="64">B</text></g>
+        <g class="tag prov" data-wall="C" tabindex="0" role="button" aria-label="Wall C"><circle cx="313" cy="492" r="14"/><text x="313" y="492">C</text></g>
+        <g class="tag" data-wall="D" tabindex="0" role="button" aria-label="Wall D"><circle cx="75" cy="268" r="14"/><text x="75" y="268">D</text></g>
+        <g class="tag" data-wall="E" tabindex="0" role="button" aria-label="Wall E"><circle cx="542" cy="278" r="14"/><text x="542" y="278">E</text></g>
+        <g class="tag" data-wall="F" tabindex="0" role="button" aria-label="Wall F"><circle cx="720" cy="64" r="14"/><text x="720" y="64">F</text></g>
+        <g class="tag" data-wall="G" tabindex="0" role="button" aria-label="Wall G"><circle cx="980" cy="278" r="14"/><text x="980" y="278">G</text></g>
+        <g class="tag" data-wall="H" tabindex="0" role="button" aria-label="Wall H"><circle cx="678" cy="492" r="14"/><text x="678" y="492">H</text></g>
+      </svg>
+    </div>
+    <div class="plan-legend">
+      <span><i class="ll" style="border-color:var(--paper)"></i>wall</span>
+      <span><i class="ll" style="border-color:var(--oak); border-top-style:dashed"></i>door swing</span>
+      <span><i class="ll" style="border-color:var(--green); border-top-width:3px"></i>opening / glazing</span>
+      <span><i class="ll" style="border-color:var(--brass)"></i>kept feature</span>
+    </div>
+  </div>
+</section>
+
+<section id="walls">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">02</span><h2>Wall register</h2></div>
+    <p class="sec-sub reveal">Eight wall faces; the divider contributes one to each room (A dining side, E lounge side). Letters A–C are provisional until the dining-half mapping is confirmed.</p>
+    <div class="grid" id="cards">
+      <!-- cards injected -->
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">03</span><h2>Build order</h2></div>
+    <p class="sec-sub reveal">Sequenced so the room stays usable and the dust-heavy work happens before final finishes. Hard rules are the dependencies in the master plan; the order itself flexes.</p>
+    <div class="steps reveal">
+      <div class="step"><div><h4>Whole-room survey</h4><p>Photos, measurements, confirm A/B/C, lock the fire model, finalise renders. Gate: no build until complete.</p></div></div>
+      <div class="step"><div><h4>Wall F — media wall</h4><p>The structural build and the methodology prototype. Prove the process here.</p></div></div>
+      <div class="step"><div><h4>Other build walls</h4><p>Any remaining joinery while construction tolerance is high.</p></div></div>
+      <div class="step"><div><h4>Second fix</h4><p>Door swaps, curtain tracks and hardware, brass.</p></div></div>
+      <div class="step"><div><h4>Skim &amp; whole-room paint</h4><p>One Studio Green pass for even colour and fewer cut-ins.</p></div></div>
+      <div class="step"><div><h4>Flooring</h4><p>Refinish or lay continuous oak across both halves, through the arch; then skirting.</p></div></div>
+      <div class="step"><div><h4>LED &amp; electrics</h4><p>Concealed warm lighting; electrician for fixed circuits.</p></div></div>
+      <div class="step"><div><h4>Styling &amp; snagging</h4><p>Dress, light, and close out room-wide.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="budget">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">04</span><h2>Budget &amp; survey</h2></div>
+    <p class="sec-sub reveal">Materials only, DIY labour excluded. Wall F is costed from its workbook; the rest are decoration-led and costed as each wall is decomposed. Verify all prices locally.</p>
+    <div class="two reveal">
+      <div>
+        <div class="bud-row"><span class="lbl">Wall F — media wall<small>Low / Target / High</small></span><span class="fig">£1,974 · 3,753 · 7,159</span></div>
+        <div class="bud-row"><span class="lbl">Walls A · B · C · D · E · G · H<small>paint · curtains · door · decor</small></span><span class="fig tbd">TBD</span></div>
+        <div class="bud-row"><span class="lbl">Whole room — rough order<small>materials, DIY</small></span><span class="fig">≈ £6–8k</span></div>
+        <div class="barwrap"><div class="bar"><i></i></div>
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-top:8px">Wall F is the expensive outlier — the only full build.</div>
+        </div>
+      </div>
+      <div>
+        <div class="mono" style="font-size:12px;color:var(--paper-dim);letter-spacing:.04em">MEASUREMENT REGISTER · 2 of 17 locked</div>
+        <div class="barwrap" style="margin-top:10px"><div class="bar"><i style="width:12%"></i></div></div>
+        <ul class="survey-list">
+          <li><span class="dot ok"></span>Room width — 3180</li>
+          <li><span class="dot ok"></span>Dining depth — 3440</li>
+          <li><span class="dot"></span>Ceiling height</li>
+          <li><span class="dot"></span>Lounge depth</li>
+          <li><span class="dot"></span>Brick arch W·H·offset</li>
+          <li><span class="dot"></span>Kitchen doorway</li>
+          <li><span class="dot"></span>Serving hatch</li>
+          <li><span class="dot"></span>Hall doors ×2</li>
+          <li><span class="dot"></span>Patio doors</li>
+          <li><span class="dot"></span>Chimney breast + opening</li>
+          <li><span class="dot"></span>Alcoves ×2</li>
+          <li><span class="dot"></span>Front window</li>
+          <li><span class="dot"></span>Lounge hall door</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="note">Source of truth: <a href="https://github.com/altitudeaico/homeimprovements/blob/main/Living%20Room/MASTER_PLAN.md">Living Room / MASTER_PLAN.md</a>. No value here is invented — “TBD” means unmeasured. v2.0.</p>
+    <a class="repo-btn" href="https://github.com/altitudeaico/homeimprovements" target="_blank" rel="noopener">View repository ↗</a>
+  </div>
+</footer>
+
+<script>
+const walls = [
+  {l:"A", name:"Divider — dining side", len:"3.18 m", status:"con", prov:true,  note:"Exposed-brick archway and brass sconces, seen from the dining room.", file:"Living%20Room/Wall_A/Wall_A.md"},
+  {l:"B", name:"Dining kitchen wall",   len:"3.44 m", status:"con", prov:true,  note:"Fridge, kitchen doorway, boxed chimney column, serving hatch.", file:"Living%20Room/Wall_B/Wall_B.md"},
+  {l:"C", name:"Dining hall-doors wall",len:"3.44 m", status:"con", prov:true,  note:"Two white panel doors through to the hall.", file:"Living%20Room/Wall_C/Wall_C.md"},
+  {l:"D", name:"Dining garden wall",    len:"3.18 m", status:"app", prov:false, note:"Sliding patio doors to the conservatory; new curtains.", file:"Living%20Room/Wall_D/Wall_D.md"},
+  {l:"E", name:"Divider — lounge side", len:"3.18 m", status:"app", prov:false, note:"The brick arch and brass sconces, seen from the lounge.", file:"Living%20Room/Wall_E/Wall_E.md"},
+  {l:"F", name:"Lounge media wall",     len:"depth TBD", status:"ref", prov:false, note:"Chimney breast, linear fire, TV, two mirrored alcoves. Reference build.", file:"Living%20Room/Wall_F/Wall_F.md"},
+  {l:"G", name:"Lounge front window",   len:"3.18 m", status:"app", prov:false, note:"Leaded diamond window kept as character; new dressing.", file:"Living%20Room/Wall_G/Wall_G.md"},
+  {l:"H", name:"Lounge door wall",      len:"depth TBD", status:"app", prov:false, note:"Hall door, black sofa, three artworks.", file:"Living%20Room/Wall_H/Wall_H.md"},
+];
+const sLabel = {app:["Approved","s-app"], con:["Concept","s-con"], ref:["Reference build","s-ref"]};
+const base = "https://github.com/altitudeaico/homeimprovements/blob/main/";
+const cards = document.getElementById("cards");
+walls.forEach(w=>{
+  const [txt,cls] = sLabel[w.status];
+  const el = document.createElement("article");
+  el.className="card"; el.id="wall-"+w.l; el.dataset.wall=w.l;
+  el.innerHTML = `
+    <div class="id">${w.l}</div>
+    <h3>${w.name}</h3>
+    <div class="len">${w.len}</div>
+    <p>${w.note}</p>
+    <div><span class="status ${cls}">${txt}</span>${w.prov?'<span class="prov-flag">provisional</span>':''}</div>
+    <div style="margin-top:14px"><a class="file" href="${base+w.file}" target="_blank" rel="noopener">${w.file.split('/').pop().replace('%20',' ')} ↗</a></div>`;
+  cards.appendChild(el);
+});
+
+// link plan tags <-> cards
+const tags = document.querySelectorAll(".tag");
+function focusWall(l){
+  const card = document.getElementById("wall-"+l);
+  if(!card) return;
+  document.querySelectorAll(".card.active").forEach(c=>c.classList.remove("active"));
+  card.classList.add("active");
+  card.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth", block:"center"});
+  setTimeout(()=>card.classList.remove("active"), 2200);
+}
+tags.forEach(t=>{
+  const l=t.dataset.wall;
+  const hi=on=>{ t.classList.toggle("active",on); const c=document.getElementById("wall-"+l); if(c)c.classList.toggle("active",on); };
+  t.addEventListener("mouseenter",()=>hi(true));
+  t.addEventListener("mouseleave",()=>hi(false));
+  t.addEventListener("click",()=>focusWall(l));
+  t.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();focusWall(l);} });
+});
+
+// scroll reveal
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add("in"); io.unobserve(e.target);} }), {threshold:.12});
+document.querySelectorAll(".reveal").forEach(n=>io.observe(n));
+</script>
+</body>
+</html>
