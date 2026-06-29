@@ -173,6 +173,25 @@ function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('sho
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600); }
 
 let state = { room:null, walls:[], wallSummary:{}, linesByWall:{}, receiptsByWall:{}, open:new Set() };
+let CATALOGUE = { version:null, items:[] };
+
+async function loadCatalogue(){
+  try{
+    const res = await fetch('Resources/catalogue/catalogue.json', { cache:'no-store' });
+    if(res.ok) CATALOGUE = await res.json();
+  }catch(e){ /* not found / offline — manual entry still works */ }
+}
+function catalogueOptionsHTML(){
+  if(!CATALOGUE.items || !CATALOGUE.items.length) return '';
+  const cats = {};
+  CATALOGUE.items.forEach(i => (cats[i.category] ||= []).push(i));
+  const groups = Object.entries(cats).map(([cat, items]) =>
+    `<optgroup label="${esc(cat)}">` +
+    items.map(i => `<option value="${esc(i.key)}">${esc(i.name)} — ${gbp(i.price_target)}/${esc(i.unit)}</option>`).join('') +
+    `</optgroup>`).join('');
+  return `<div style="grid-column:1/-1"><label>Catalogue item (optional — auto-fills, still editable)</label>
+    <select data-f="catalogue"><option value="">— choose to auto-fill, or enter manually —</option>${groups}</select></div>`;
+}
 
 /* ---------- auth ---------- */
 async function refreshAuth(){
@@ -305,6 +324,7 @@ function renderWallBody(w){
     <details style="margin-top:10px">
       <summary style="cursor:pointer;color:var(--oak);font-size:13px">+ Add a planned line</summary>
       <div class="grid-form" style="margin-top:10px">
+        ${catalogueOptionsHTML()}
         <div style="grid-column:1/-1"><label>Description</label><input data-f="description" placeholder="Oak slat panel"></div>
         <div><label>Qty</label><input data-f="qty" type="number" step="any" value="1"></div>
         <div><label>Unit</label><input data-f="unit" placeholder="m / each"></div>
@@ -332,6 +352,16 @@ function renderWallBody(w){
     </details>`;
 
   body.querySelector('[data-add-line]').onclick = () => addLine(w.id, body);
+  const catSel = body.querySelector('[data-f="catalogue"]');
+  if(catSel) catSel.onchange = () => {
+    const it = CATALOGUE.items.find(i => i.key === catSel.value);
+    if(!it) return;
+    body.querySelector('[data-f="description"]').value = it.name;
+    body.querySelector('[data-f="unit"]').value = it.unit || '';
+    body.querySelector('[data-f="low"]').value = it.price_low ?? '';
+    body.querySelector('[data-f="target"]').value = it.price_target ?? '';
+    body.querySelector('[data-f="high"]').value = it.price_high ?? '';
+  };
   body.querySelector('[data-add-rec]').onclick = () => addReceipt(w.id, body);
   body.querySelectorAll('[data-del-line]').forEach(b => b.onclick = () => delLine(b.dataset.delLine));
   body.querySelectorAll('[data-del-rec]').forEach(b => b.onclick = () => delReceipt(b.dataset.delRec));
@@ -349,11 +379,14 @@ async function addLine(wallId, scope){
   const get = f => scope.querySelector(`[data-f="${f}"]`).value;
   const description = get('description').trim();
   if(!description) return toast('Give the line a description');
+  const catKey = scope.querySelector('[data-f="catalogue"]') ? scope.querySelector('[data-f="catalogue"]').value : '';
   const payload = {
     room_id: state.room.id, wall_id: wallId, description,
     qty: parseFloat(get('qty'))||1, unit: get('unit').trim()||null,
     low: parseFloat(get('low'))||null, target: parseFloat(get('target'))||null,
-    high: parseFloat(get('high'))||null, status: get('status')
+    high: parseFloat(get('high'))||null, status: get('status'),
+    catalogue_key: catKey || null,
+    catalogue_version: catKey ? (CATALOGUE.version || null) : null
   };
   const { error } = await sb.from('budget_lines').insert(payload);
   if(error) return toast(error.message);
@@ -403,7 +436,7 @@ function subscribe(){
 }
 
 sb.auth.onAuthStateChange(()=>{});
-refreshAuth();
+loadCatalogue().finally(refreshAuth);
 </script>
 </body>
 </html>
