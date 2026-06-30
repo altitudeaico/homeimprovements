@@ -141,16 +141,24 @@
     <div class="est">
       <div class="section-label">Smart estimate</div>
       <div class="card">
-        <div class="between">
-          <div>
-            <h3 style="font-size:16px">Describe a wall, get a costed plan</h3>
-            <p class="note" style="margin-top:6px;max-width:560px">
-              Type what a wall needs in plain English and a costed set of budget lines comes back —
-              priced from your catalogue, explained by a small local model. This turns on once the
-              catalogue and local model are wired. For now, add lines by hand on each wall above.</p>
-          </div>
-          <button disabled title="Coming next">Coming next</button>
+        <div class="between" style="align-items:center">
+          <h3 style="font-size:16px">Describe a wall, get a costed plan</h3>
+          <span class="pill" id="est-mode">deterministic</span>
         </div>
+        <p class="note" style="margin:6px 0 12px;max-width:640px">
+          List what a wall needs, one item per line — e.g. <em>7 oak slat panels</em>,
+          <em>1 linear fire</em>, <em>2 led strip</em>. Prices come from your catalogue and the
+          maths is exact. Natural-language understanding plugs in here next.</p>
+        <div class="grid-form">
+          <div style="grid-column:1/-1"><label>For wall</label><select id="est-wall"></select></div>
+          <div style="grid-column:1/-1"><label>Items (one per line)</label>
+            <textarea id="est-input" rows="5" placeholder="7 oak slat panels&#10;1 linear fire&#10;2 led strip&#10;1 led driver&#10;3 cls batten"></textarea></div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button class="primary" id="est-run">Estimate</button>
+          <button class="ghost" id="est-clear">Clear</button>
+        </div>
+        <div id="est-results" style="margin-top:14px"></div>
       </div>
     </div>
   </div>
@@ -247,6 +255,7 @@ async function loadAll(){
     (state.receiptsByWall[r.wall_id] ||= []).push(r);
   }
   renderWalls();
+  populateEstimatorWalls();
 }
 
 function renderRollup(rs){
@@ -423,6 +432,128 @@ async function delReceipt(id){
   const { error } = await sb.from('receipts').delete().eq('id', id);
   if(error) return toast(error.message);
   toast('Receipt removed'); await loadAll();
+}
+
+/* ---------- estimator (deterministic; NL parser plugs in here later) ---------- */
+let estState = { rows:[], unmatched:[], wired:false };
+
+function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
+function toks(s){ return norm(s).split(' ').filter(Boolean)
+  .map(t => (t.length>3 && t.endsWith('s')) ? t.slice(0,-1) : t); }
+function itemToks(it){
+  if(!it._tok) it._tok = Array.from(new Set([...toks(it.name), ...String(it.key).split('-')]));
+  return it._tok;
+}
+function matchItem(query){
+  const qt = toks(query).filter(q => q.length >= 2);
+  if(!qt.length || !CATALOGUE.items.length) return null;
+  let best=null, bestScore=0;
+  for(const it of CATALOGUE.items){
+    const itk = itemToks(it);
+    let hit=0;
+    for(const q of qt){
+      if(itk.some(t => t===q || (q.length>=4 && t.length>=4 && (t.includes(q) || q.includes(t))))) hit++;
+    }
+    const score = hit/qt.length;
+    if(score>bestScore){ bestScore=score; best=it; }
+  }
+  return bestScore>=0.5 ? { item:best, score:bestScore } : null;
+}
+function parseLine(line){
+  const s=line.trim(); if(!s) return null;
+  let qty=1, rest=s, m;
+  if((m=s.match(/^(\d+(?:\.\d+)?)\s*[x×]?\s+(.+)$/))){ qty=parseFloat(m[1]); rest=m[2]; }
+  else if((m=s.match(/^(.+?)\s*[x×]\s*(\d+(?:\.\d+)?)$/))){ rest=m[1]; qty=parseFloat(m[2]); }
+  return { qty, text:rest.trim() };
+}
+function estLine(it,qty,f){ return (Number(it['price_'+f])||0) * (Number(qty)||0); }
+
+function runEstimate(){
+  const lines = ($('est-input').value||'').split('\n');
+  const rows=[], unmatched=[];
+  for(const ln of lines){
+    const p=parseLine(ln); if(!p) continue;
+    const match=matchItem(p.text);
+    if(match) rows.push({ qty:p.qty, text:p.text, item:match.item, score:match.score });
+    else unmatched.push({ qty:p.qty, text:p.text });
+  }
+  estState.rows=rows; estState.unmatched=unmatched;
+  renderEstimateResults();
+}
+
+function renderEstimateResults(){
+  const host=$('est-results');
+  const { rows, unmatched }=estState;
+  if(!rows.length && !unmatched.length){ host.innerHTML=''; return; }
+  let low=0,target=0,high=0;
+  rows.forEach(r=>{ low+=estLine(r.item,r.qty,'low'); target+=estLine(r.item,r.qty,'target'); high+=estLine(r.item,r.qty,'high'); });
+  const opts=(sel)=>CATALOGUE.items.map(i=>`<option value="${esc(i.key)}" ${i.key===sel?'selected':''}>${esc(i.name)}</option>`).join('');
+  const rowHTML=rows.map((r,idx)=>`
+    <tr>
+      <td class="num">${esc(r.qty)}</td>
+      <td><select data-row="${idx}" class="est-pick">${opts(r.item.key)}</select>
+        <div style="font-size:11px;color:var(--muted)">from "${esc(r.text)}" · match ${Math.round(r.score*100)}%</div></td>
+      <td class="num">${esc(r.item.unit||'')}</td>
+      <td class="r num">${gbp(estLine(r.item,r.qty,'target'))}</td>
+      <td class="r"><button class="danger" data-est-del="${idx}">remove</button></td>
+    </tr>`).join('');
+  const unmatchedHTML = unmatched.length ? `
+    <p class="note" style="margin-top:10px;color:var(--warn)">No catalogue match for:
+      ${unmatched.map(u=>`"${esc(u.text)}"`).join(', ')} — add these by hand on the wall, or rename to match a catalogue item.</p>` : '';
+  host.innerHTML=`
+    <table><thead><tr><th>Qty</th><th>Matched item</th><th>Unit</th><th class="r">Target</th><th></th></tr></thead>
+      <tbody>${rowHTML || '<tr><td colspan="5" class="empty">Nothing matched yet.</td></tr>'}</tbody></table>
+    <div class="between" style="margin-top:12px;align-items:center">
+      <div class="num" style="font-size:13px;color:var(--soft)">
+        Estimate: <b style="color:var(--cream)">${gbp(target)}</b>
+        <span style="color:var(--muted)"> (range ${gbp(low)} – ${gbp(high)})</span></div>
+      <button class="primary" id="est-save" ${rows.length?'':'disabled'}>Save ${rows.length} line${rows.length===1?'':'s'} to wall</button>
+    </div>${unmatchedHTML}`;
+  host.querySelectorAll('.est-pick').forEach(s=> s.onchange=()=>{
+    const i=+s.dataset.row, it=CATALOGUE.items.find(x=>x.key===s.value);
+    if(it){ estState.rows[i].item=it; estState.rows[i].score=1; renderEstimateResults(); }
+  });
+  host.querySelectorAll('[data-est-del]').forEach(b=> b.onclick=()=>{ estState.rows.splice(+b.dataset.estDel,1); renderEstimateResults(); });
+  const saveBtn=$('est-save'); if(saveBtn) saveBtn.onclick=saveEstimate;
+}
+
+async function saveEstimate(){
+  const wallId=$('est-wall').value;
+  if(!wallId) return toast('Pick a wall first');
+  if(!estState.rows.length) return toast('Nothing to save');
+  let low=0,target=0,high=0;
+  estState.rows.forEach(r=>{ low+=estLine(r.item,r.qty,'low'); target+=estLine(r.item,r.qty,'target'); high+=estLine(r.item,r.qty,'high'); });
+  const { data:est } = await sb.from('estimates').insert({
+    room_id:state.room.id, wall_id:wallId,
+    prompt_text:$('est-input').value,
+    parsed_json: estState.rows.map(r=>({ key:r.item.key, qty:r.qty, text:r.text })),
+    low, target, high, model_used:'deterministic', catalogue_version:CATALOGUE.version||null
+  }).select().maybeSingle();
+  const lines=estState.rows.map(r=>({
+    room_id:state.room.id, wall_id:wallId, estimate_id: est ? est.id : null,
+    catalogue_key:r.item.key, catalogue_version:CATALOGUE.version||null,
+    description:r.item.name, qty:r.qty, unit:r.item.unit||null,
+    low:r.item.price_low ?? null, target:r.item.price_target ?? null, high:r.item.price_high ?? null,
+    status:'planned'
+  }));
+  const { error } = await sb.from('budget_lines').insert(lines);
+  if(error) return toast(error.message);
+  toast(`Saved ${lines.length} line${lines.length===1?'':'s'}`);
+  $('est-input').value=''; estState.rows=[]; estState.unmatched=[]; $('est-results').innerHTML='';
+  state.open.add(wallId);
+  await loadAll();
+}
+
+function populateEstimatorWalls(){
+  const sel=$('est-wall'); if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML=state.walls.map(w=>`<option value="${w.id}">${esc(w.letter)} · ${esc(w.name)}</option>`).join('');
+  if(cur) sel.value=cur;
+  if(!estState.wired){
+    $('est-run').onclick=runEstimate;
+    $('est-clear').onclick=()=>{ $('est-input').value=''; estState.rows=[]; estState.unmatched=[]; $('est-results').innerHTML=''; };
+    estState.wired=true;
+  }
 }
 
 /* ---------- realtime ---------- */
